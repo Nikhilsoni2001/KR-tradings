@@ -24,6 +24,11 @@ const Container = styled.div`
   align-items: center;
   justify-content: space-evenly;
   border-radius: 6px;
+
+  :hover {
+    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2);
+    transition: all 0.6s ease;
+  }
 `;
 const LeftContainer = styled.div`
   background: #f5f5f5;
