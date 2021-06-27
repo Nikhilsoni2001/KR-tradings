@@ -5,6 +5,7 @@ import Home from "./components/Home/Home";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import Catalogue from "./components/Catalogue/Catalogue";
 import Cart from "./components/Cart/Cart";
+import Footer from "./components/Footer/Footer";
 
 function App() {
   return (
@@ -22,7 +23,7 @@ function App() {
           <Route path="/utensils">
             <Catalogue title="Utensils" />
           </Route>
-          <Route path="/Daily use">
+          <Route path="/Daily-use">
             <Catalogue title="Daily use" />
           </Route>
           <Route path="/Electronics">
@@ -33,6 +34,7 @@ function App() {
             <Home />
           </Route>
         </Switch>
+        <Footer />
       </Container>
     </Router>
   );

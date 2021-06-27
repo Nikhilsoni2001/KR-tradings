@@ -1,12 +1,34 @@
-import React from "react";
+import React, { useEffect } from "react";
 import styled from "styled-components";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
 import { Link } from "react-router-dom";
 import { useState } from "react";
+import { db } from "../../Firebase";
 
 const Header = ({ logo }) => {
   const [open, setOpen] = useState(false);
+  const [total, setTotal] = useState(0);
+
+  useEffect(() => {
+    getcount();
+  }, [total]);
+
+  const getcount = () => {
+    db.collection("cart")
+      .get()
+      .then((snapshot) => {
+        let temp = [];
+        temp = snapshot.docs.map((doc) => ({
+          count: parseInt(doc.data().quantity),
+        }));
+        let count = 0;
+        temp.forEach((item) => {
+          count += item.count;
+        });
+        setTotal(count);
+      });
+  };
 
   const DropDown = () => {
     return (
@@ -69,6 +91,7 @@ const Header = ({ logo }) => {
           <Link to="/cart" style={{ color: "black" }}>
             <ShoppingBasketIcon />
           </Link>
+          {total}
         </CartLogo>
       </Nav>
     </Container>
@@ -137,6 +160,9 @@ const NavItem = styled.a`
   }
 `;
 const CartLogo = styled.div`
+display: flex;
+align-items: center;
+padding: 2px;
   margin-right: 20px;
   cursor pointer;
   :hover {

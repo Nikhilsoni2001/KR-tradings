@@ -17,6 +17,18 @@ const CartProduct = ({
     array[i] = i + 1;
   }
 
+  const handleChange = (event) => {
+    setQnt(event.target.value);
+    db.collection("cart").doc(id).set({
+      title: title,
+      quantity: event.target.value,
+      description: description,
+      price: price,
+      image: image,
+      id: id,
+    });
+  };
+
   return (
     <Container>
       <LeftContainer>
@@ -30,7 +42,7 @@ const CartProduct = ({
         <Price>{price}</Price>
 
         <Quantity>
-          <Select onChange={(event) => setQnt(event.target.value)} value={qnt}>
+          <Select onChange={(e) => handleChange(e)} value={qnt}>
             {array.map((option) => (
               <Option>{option}</Option>
             ))}

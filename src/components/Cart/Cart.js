@@ -5,10 +5,11 @@ import Subtotal from "./Subtotal";
 import { db } from "../../Firebase";
 
 const Cart = () => {
-  const [products, setProducts] = useState([]);
+  const [cartItems, setCartItems] = useState([]);
+
   useEffect(() => {
     getProducts();
-  }, [products]);
+  }, [cartItems]);
 
   const getProducts = () => {
     db.collection("cart")
@@ -19,9 +20,27 @@ const Cart = () => {
           id: doc.id,
           product: doc.data(),
         }));
-        setProducts(tempProd);
+        setCartItems(tempProd);
       });
   };
+
+  const getTotal = () => {
+    let total = 0;
+    cartItems.forEach((item) => {
+      total += item.product.quantity * item.product.price;
+    });
+    return total;
+  };
+
+  const getCount = () => {
+    let count = 0;
+    cartItems.forEach((item) => {
+      count += parseInt(item.product.quantity);
+    });
+    console.log(count);
+    return count;
+  };
+
   return (
     <Container>
       <CartItems>
@@ -29,7 +48,7 @@ const Cart = () => {
           <Heading>Your Cart Items</Heading>
         </HeadingContainer>
 
-        {products.map((data) => (
+        {cartItems.map((data) => (
           <CartProduct
             key={data.id}
             id={data.id}
@@ -43,7 +62,7 @@ const Cart = () => {
       </CartItems>
 
       <CartBilling>
-        <Subtotal />
+        <Subtotal count={getCount()} total={getTotal()} />
       </CartBilling>
     </Container>
   );

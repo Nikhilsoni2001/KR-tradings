@@ -2,13 +2,13 @@ import React from "react";
 import styled from "styled-components";
 import NumberFormat from "react-number-format";
 
-const Subtotal = () => {
+const Subtotal = ({ count, total }) => {
   return (
     <Container>
       <Total>
-        Subtotal (0 items):
+        Subtotal ({count} items):
         <NumberFormat
-          value={0}
+          value={total}
           displayType={"text"}
           thousandSeparator={true}
           prefix={"Rs."}

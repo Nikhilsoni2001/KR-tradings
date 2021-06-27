@@ -9,7 +9,6 @@ const Home = () => {
     <Container>
       <LandingPage />
       <BestSeller />
-      <Footer />
     </Container>
   );
 };
