@@ -4,7 +4,7 @@ import Product from "../Product/Product";
 
 const BestSeller = () => {
   return (
-    <Container>
+    <Container id="bestseller">
       <TopContainer>
         <Heading>Our BestSeller</Heading>
       </TopContainer>

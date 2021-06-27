@@ -5,6 +5,7 @@ import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
 import { BrowserRouter as Router, Link } from "react-router-dom";
+import { Link as SLink } from "react-scroll";
 
 const LandingPage = () => {
   return (
@@ -19,9 +20,15 @@ const LandingPage = () => {
             <Description>
               We are delivering the best at a reasonable price.
             </Description>
-            <Link to="cs">
+            <SLink
+              to="bestseller"
+              spy={true}
+              smooth={true}
+              duration={500}
+              offset={-70}
+            >
               <Button>Shop Now</Button>
-            </Link>
+            </SLink>
           </LeftContainer>
 
           <RightContainer>

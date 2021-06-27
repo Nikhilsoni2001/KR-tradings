@@ -1,33 +1,50 @@
-import React, { useEffect } from "react";
+import React from "react";
 import styled from "styled-components";
 import ShoppingBasketIcon from "@material-ui/icons/ShoppingBasket";
 import PersonIcon from "@material-ui/icons/Person";
 import { Link } from "react-router-dom";
 import { useState } from "react";
-import { db } from "../../Firebase";
+import { Modal, makeStyles } from "@material-ui/core";
 
-const Header = ({ logo }) => {
+const useStyles = makeStyles((theme) => ({
+  paper: {
+    position: "absolute",
+    width: 350,
+    backgroundColor: theme.palette.background.paper,
+    border: "1px solid #000",
+    borderRadius: "8px",
+    boxShadow: theme.shadows[5],
+    padding: theme.spacing(2, 4, 3),
+
+    "@media screen and (max-width: 481px)": {
+      width: 200,
+    },
+  },
+}));
+
+function getModalStyle() {
+  const top = 50;
+  const left = 50;
+
+  return {
+    top: `${50}%`,
+    left: `${50}%`,
+    transform: `translate(-${top}%, -${left}%)`,
+  };
+}
+
+const Header = ({ logo, user, signOut, cartItems }) => {
   const [open, setOpen] = useState(false);
-  const [total, setTotal] = useState(0);
-
-  useEffect(() => {
-    getcount();
-  }, [total]);
+  const [openModal, setOpenModal] = useState(false);
+  const classes = useStyles();
+  const [modalStyle] = useState(getModalStyle);
 
   const getcount = () => {
-    db.collection("cart")
-      .get()
-      .then((snapshot) => {
-        let temp = [];
-        temp = snapshot.docs.map((doc) => ({
-          count: parseInt(doc.data().quantity),
-        }));
-        let count = 0;
-        temp.forEach((item) => {
-          count += item.count;
-        });
-        setTotal(count);
-      });
+    let count = 0;
+    cartItems.forEach((item) => {
+      count += JSON.parse(item.product.quantity);
+    });
+    return count;
   };
 
   const DropDown = () => {
@@ -54,6 +71,23 @@ const Header = ({ logo }) => {
 
   return (
     <Container>
+      <Modal open={openModal} onClose={(e) => setOpenModal(false)}>
+        <ModalContainer style={modalStyle} className={classes.paper}>
+          <h2>User Details</h2>
+          <Image src={user.photo} />
+          <ModalRow>
+            <Title>Name: </Title>
+            <Content>{user.name}</Content>
+          </ModalRow>
+          <ModalRow>
+            <Title>Email: </Title>
+            <Content>{user.email}</Content>
+          </ModalRow>
+
+          <Logout onClick={signOut}>Logout</Logout>
+        </ModalContainer>
+      </Modal>
+
       <Link to="/">
         <Logo img src={logo} />
       </Link>
@@ -84,14 +118,18 @@ const Header = ({ logo }) => {
         </NavItems>
         <CartLogo>
           <Link to="/login" style={{ color: "black" }}>
-            <PersonIcon />
+            <PersonIcon
+              onClick={() => {
+                setOpenModal(true);
+              }}
+            />
           </Link>
         </CartLogo>
         <CartLogo>
           <Link to="/cart" style={{ color: "black" }}>
             <ShoppingBasketIcon />
           </Link>
-          {total}
+          {getcount()}
         </CartLogo>
       </Nav>
     </Container>
@@ -114,7 +152,7 @@ const Container = styled.div`
 `;
 
 const Logo = styled.img`
-  height: 80px;
+  height: 70px;
   cursor: pointer;
 
   @media screen and (max-width: 1200px) {
@@ -193,4 +231,42 @@ const DropDownItems = styled(NavItems)`
 const DropDownItem = styled(NavItem)`
   font-size: 0.9rem;
   margin-top: 30px;
+`;
+const ModalContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+`;
+const Image = styled.img`
+  margin: 10px 0;
+  height: 80px;
+  border-radius: 50%;
+`;
+
+const ModalRow = styled.div`
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: space-between;
+  margin: 10px 0;
+`;
+const Title = styled.h3``;
+const Content = styled.h4``;
+const Logout = styled.button`
+  margin-top: 30px;
+  height: 35px;
+  padding: 4px 8px;
+  font-size: 14px;
+  background: #3f51b5;
+  outline: none;
+  border: none;
+  border-radius: 6px;
+  color: white;
+  cursor: pointer;
+
+  :hover {
+    color: #3f51b5;
+    background-color: #f5f5f5;
+    transition: all 1s;
+  }
 `;

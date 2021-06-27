@@ -1,29 +1,9 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import styled from "styled-components";
 import CartProduct from "../Product/CartProduct";
 import Subtotal from "./Subtotal";
-import { db } from "../../Firebase";
 
-const Cart = () => {
-  const [cartItems, setCartItems] = useState([]);
-
-  useEffect(() => {
-    getProducts();
-  }, [cartItems]);
-
-  const getProducts = () => {
-    db.collection("cart")
-      .get()
-      .then((snapshot) => {
-        let tempProd = [];
-        tempProd = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          product: doc.data(),
-        }));
-        setCartItems(tempProd);
-      });
-  };
-
+const Cart = ({ cartItems }) => {
   const getTotal = () => {
     let total = 0;
     cartItems.forEach((item) => {
@@ -37,7 +17,6 @@ const Cart = () => {
     cartItems.forEach((item) => {
       count += parseInt(item.product.quantity);
     });
-    console.log(count);
     return count;
   };
 
