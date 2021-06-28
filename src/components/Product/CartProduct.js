@@ -2,24 +2,25 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { db } from "../../Firebase";
 
-const CartProduct = ({
-  key,
-  id,
-  quantity,
-  title,
-  price,
-  image,
-  description,
-}) => {
+const CartProduct = ({ id, quantity, title, price, image, description }) => {
   const [qnt, setQnt] = useState(quantity);
   const array = new Array(20);
   for (let i = 0; i < array.length; i++) {
     array[i] = i + 1;
   }
 
+  const handleRemove = () => {
+    db.collection("users").doc(getUid()).collection("cart").doc(id).delete();
+  };
+
+  const getUid = () => {
+    const temp = JSON.parse(localStorage.getItem("user"));
+    return temp.uid;
+  };
+
   const handleChange = (event) => {
     setQnt(event.target.value);
-    db.collection("cart").doc(id).set({
+    db.collection("users").doc(getUid()).collection("cart").doc(id).set({
       title: title,
       quantity: event.target.value,
       description: description,
@@ -50,9 +51,7 @@ const CartProduct = ({
         </Quantity>
       </MiddleContainer>
       <RightContainer>
-        <Button onClick={(e) => db.collection("cart").doc(id).delete()}>
-          Remove
-        </Button>
+        <Button onClick={(e) => handleRemove()}>Remove</Button>
       </RightContainer>
     </Container>
   );

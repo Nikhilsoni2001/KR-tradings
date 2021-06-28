@@ -117,7 +117,7 @@ const Header = ({ logo, user, signOut, cartItems }) => {
           </Link>
         </NavItems>
         <CartLogo>
-          <Link to="/login" style={{ color: "black" }}>
+          <Link style={{ color: "black" }}>
             <PersonIcon
               onClick={() => {
                 setOpenModal(true);

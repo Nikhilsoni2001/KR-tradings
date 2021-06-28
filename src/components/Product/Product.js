@@ -3,9 +3,19 @@ import styled from "styled-components";
 import ShoppingCartIcon from "@material-ui/icons/ShoppingCart";
 import { db } from "../../Firebase";
 
-const Product = ({ id, title, image, description, price }) => {
+const Product = ({ id, title, image, description, price, bestseller }) => {
+  const getUid = () => {
+    const temp = JSON.parse(localStorage.getItem("user"));
+
+    return temp.uid;
+  };
+
   const addToCart = () => {
-    const cartItem = db.collection("cart").doc(id);
+    const cartItem = db
+      .collection(`users`)
+      .doc(getUid())
+      .collection("cart")
+      .doc(id);
     cartItem.get().then((doc) => {
       if (doc.exists) {
         cartItem.update({
@@ -19,6 +29,7 @@ const Product = ({ id, title, image, description, price }) => {
           description: description,
           price: price,
           quantity: 1,
+          bestseller: bestseller,
         });
       }
     });

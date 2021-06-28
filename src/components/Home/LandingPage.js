@@ -4,7 +4,7 @@ import Card from "./Card";
 import AccountBalanceWalletIcon from "@material-ui/icons/AccountBalanceWallet";
 import LocalOfferIcon from "@material-ui/icons/LocalOffer";
 import LocalShippingIcon from "@material-ui/icons/LocalShipping";
-import { BrowserRouter as Router, Link } from "react-router-dom";
+import { BrowserRouter as Router } from "react-router-dom";
 import { Link as SLink } from "react-scroll";
 
 const LandingPage = () => {

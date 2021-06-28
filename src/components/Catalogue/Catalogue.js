@@ -22,6 +22,7 @@ const Catalogue = ({ title }) => {
 
   useEffect(() => {
     getItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [crockeryItems]);
 
   return (
@@ -32,11 +33,13 @@ const Catalogue = ({ title }) => {
       <BottomContainer>
         {crockeryItems.map((data) => (
           <Product
+            key={data.id}
             id={data.id}
             title={data.item.name}
             price={data.item.price}
             image={data.item.image}
             description={data.item.description}
+            bestseller={data.item.bestseller}
           />
         ))}
       </BottomContainer>

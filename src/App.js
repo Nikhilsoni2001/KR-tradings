@@ -13,8 +13,15 @@ function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
   const [cartItems, setCartItems] = useState([]);
 
+  const getUid = () => {
+    const temp = JSON.parse(localStorage.getItem("user"));
+    return temp.uid;
+  };
+
   const getCartItems = () => {
-    db.collection("cart")
+    db.collection("users")
+      .doc(getUid())
+      .collection("cart")
       .get()
       .then((snapshot) => {
         let tempProd = [];
@@ -34,7 +41,8 @@ function App() {
   };
 
   useEffect(() => {
-    getCartItems();
+    user && getCartItems();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [cartItems]);
 
   return (

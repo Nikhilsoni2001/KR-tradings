@@ -1,86 +1,46 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import styled from "styled-components";
+import { db } from "../../Firebase";
 import Product from "../Product/Product";
 
 const BestSeller = () => {
+  const [bestSeller, setBestSeller] = useState([]);
+
+  const getItems = () => {
+    db.collection("products")
+      .where("bestseller", "==", true)
+      .get()
+      .then((snapshot) => {
+        let tempItems = [];
+        tempItems = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          item: doc.data(),
+        }));
+        setBestSeller(tempItems);
+      });
+  };
+
+  useEffect(() => {
+    getItems();
+  }, [bestSeller]);
+
   return (
     <Container id="bestseller">
       <TopContainer>
         <Heading>Our BestSeller</Heading>
       </TopContainer>
       <BottomContainer>
-        <Product
-          title="Cello Containers"
-          price="120"
-          image="best_1.jpg"
-          description="Air tight premium containers"
-        />
-        <Product
-          title="Dinner Set"
-          price="450"
-          image="best_2.jpg"
-          description="Luxury dinner set"
-        />
-        <Product
-          title="Turbo Flex 360"
-          price="60"
-          image="best_3.jpg"
-          description="360 degree rotation pipe"
-        />
-        <Product
-          title="Push Button Container"
-          price="130"
-          image="best_4.jpg"
-          description="Premium quality push button container"
-        />
-        <Product
-          title="Cello Containers"
-          price="120"
-          image="best_1.jpg"
-          description="Air tight premium containers"
-        />
-        <Product
-          title="Dinner Set"
-          price="450"
-          image="best_2.jpg"
-          description="Luxury dinner set"
-        />
-        <Product
-          title="Turbo Flex 360"
-          price="60"
-          image="best_3.jpg"
-          description="360 degree rotation pipe"
-        />
-        <Product
-          title="Push Button Container"
-          price="130"
-          image="best_4.jpg"
-          description="Premium quality push button container"
-        />
-        <Product
-          title="Cello Containers"
-          price="120"
-          image="best_1.jpg"
-          description="Air tight premium containers"
-        />
-        <Product
-          title="Dinner Set"
-          price="450"
-          image="best_2.jpg"
-          description="Luxury dinner set"
-        />
-        <Product
-          title="Turbo Flex 360"
-          price="60"
-          image="best_3.jpg"
-          description="360 degree rotation pipe"
-        />
-        <Product
-          title="Push Button Container"
-          price="130"
-          image="best_4.jpg"
-          description="Premium quality push button container"
-        />
+        {bestSeller.map((item) => (
+          <Product
+            key={item.id}
+            id={item.id}
+            title={item.item.name}
+            price={item.item.price}
+            image={item.item.image}
+            description={item.item.description}
+            bestseller={item.item.bestseller}
+          />
+        ))}
       </BottomContainer>
     </Container>
   );

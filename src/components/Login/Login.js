@@ -12,6 +12,7 @@ const Login = ({ logo, setUser }) => {
           name: user.displayName,
           email: user.email,
           photo: user.photoURL,
+          uid: user.uid,
         };
         localStorage.setItem("user", JSON.stringify(newUser));
         setUser(newUser);
