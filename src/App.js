@@ -8,6 +8,7 @@ import Footer from "./components/Footer/Footer";
 import Login from "./components/Login/Login";
 import { useEffect, useState } from "react";
 import { auth, db } from "./Firebase";
+import Contact from "./components/Contact/Contact";
 
 function App() {
   const [user, setUser] = useState(JSON.parse(localStorage.getItem("user")));
@@ -58,6 +59,10 @@ function App() {
             cartItems={cartItems}
           />
           <Switch>
+            <Route path="/contact">
+              <Contact />
+            </Route>
+
             <Route path="/cart">
               <Cart cartItems={cartItems} />
             </Route>

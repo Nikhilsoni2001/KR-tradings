@@ -211,8 +211,8 @@ padding: 2px;
 
 const DropDownContainer = styled.div`
   position: fixed;
-  top: 50px;
-  right: 357px;
+  top: 46px;
+  right: 370px;
   width: 160px;
   height: 120px;
   background: white;
